@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+from PyQt5.QtCore import QRegExp
 
 app = QApplication(sys.argv)
 win = QWidget()
@@ -72,7 +73,7 @@ def on_submit():
     text = 'Successfull'
     isComplete = True
     for key in result:
-        if result[key] == '' or 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'  not in result[key]:
+        if result[key] == '':
             isComplete = False
             text = 'Field not correct or aren\'t filled'
     if isComplete == True:
@@ -124,10 +125,17 @@ prodi.activated[str].connect(prodi_onClick)
 
 # ------ Piece ------
 name = QLineEdit()
+name_regex = QRegExp('^[ A-Za-z]{1,20}$')
+name_validate = QRegExpValidator(name_regex, name)
+name.setValidator(name_validate)
 nim = QLineEdit()
-nim.setMaxLength(12)
-nim.setValidator(QDoubleValidator())
+nim_regex = QRegExp('^[0-9]{12}$')
+nim_validate = QRegExpValidator(nim_regex, nim)
+nim.setValidator(nim_validate)
 email = QLineEdit()
+email_regex = QRegExp('^[a-zA-Z0-9_-\.]+@[a-zA-Z0-9_-\.]+\.[a-zA-Z]{2,4}$')
+email_validate = QRegExpValidator(email_regex, email)
+email.setValidator(email_validate)
 
 # ------ FORM ------
 form = QFormLayout()
